@@ -36,8 +36,6 @@ typedef struct plshell {
 	plmt_t* memTrack;
 } plshell_t;
 
-void setProductStrings(char* productStr, char* srcUrl);
-
 uint8_t plShell(char* cmdline, plshell_t* shellStats);
 void plShellInteractive(char* prompt, bool showHelpAtStart, plshell_t shellStats);
 
