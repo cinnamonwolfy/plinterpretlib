@@ -6,6 +6,9 @@
 #pragma once
 #include <plinterpret.h>
 
-int print(plarray_t* args, plmt_t* mt);
-int clear(plarray_t* args, plmt_t* mt);
-int exit(plarray_t* args, plmt_t* mt);
+plarray_t* builtinCmdBuf;
+
+int plIntPrint(plarray_t* args, plmt_t* mt);
+int plIntClear(plarray_t* args, plmt_t* mt);
+int plIntExit(plarray_t* args, plmt_t* mt);
+int plIntSetBuiltinBuf(plmt_t* mt);
