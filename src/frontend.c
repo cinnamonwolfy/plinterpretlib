@@ -14,7 +14,7 @@ plint_t* plIntInit(plmt_t* mt, plarray_t* commandBuf){
 }
 
 /* Interpreter frontend */
-uint8_t plShell(char* cmdline, plint_t* intStatus){
+uint8_t plInt(char* cmdline, plint_t* intStatus){
 	if(cmdline == NULL || intStatus == NULL)
 		return 1;
 
@@ -24,7 +24,7 @@ uint8_t plShell(char* cmdline, plint_t* intStatus){
 		return 1;
 
 	if(strchr(cmdline, '$') || strchr(cmdline, '=')){
-		if(plShellVarMgmt(parsedCmdLine, variableBuf, mt)){
+		if(plIntVarMgmt(parsedCmdLine, variableBuf, mt)){
 			plMTFreeArray(parsedCmdLine, true, mt);
 			return 1;
 		}
@@ -57,7 +57,7 @@ uint8_t plShell(char* cmdline, plint_t* intStatus){
 		}else if(strcmp(array[0], "show-memusg") == 0){
 			printf("%ld bytes free\n", plMTMemAmnt(mt, PLMT_GET_MAXMEM, 0) -  plMTMemAmnt(mt, PLMT_GET_USEDMEM, 0));
 		}else{
-			retVar = plShellComInt(parsedCmdLine, commandBuf, mt);
+			retVar = plIntComInt(parsedCmdLine, commandBuf, mt);
 		}
 	}
 
@@ -66,8 +66,8 @@ uint8_t plShell(char* cmdline, plint_t* intStatus){
 }
 
 
-// Interactive frontend to plShellFrontEnd()
-void plShellInteractive(char* prompt, bool showHelpAtStart, plarray_t* variableBuf, plarray_t* commandBuf, plmt_t* shellMT){
+// Interactive frontend to plIntFrontEnd()
+void plIntInteractive(char* prompt, bool showHelpAtStart, plarray_t* variableBuf, plarray_t* commandBuf, plmt_t* shellMT){
 	bool loop = true;
 	bool showRetVal = false;
 
@@ -78,10 +78,10 @@ void plShellInteractive(char* prompt, bool showHelpAtStart, plarray_t* variableB
 		prompt = "(cmd) # ";
 
 	if(showHelpAtStart){
-		plShell("help", variableBuf, commandBuf, &shellMT);
+		plInt("help", variableBuf, commandBuf, &shellMT);
 	}
 
-	plShell("show-memusg", variableBuf, commandBuf, &shellMT);
+	plInt("show-memusg", variableBuf, commandBuf, &shellMT);
 	while(loop){
 		char cmdline[4096] = "";
 		int retVal = 0;
@@ -105,7 +105,7 @@ void plShellInteractive(char* prompt, bool showHelpAtStart, plarray_t* variableB
 			commandBuf = NULL;
 			printf("Memory has been reset\n");
 		}else if(strlen(cmdline) > 0){
-			retVal = plShell(cmdline, variableBuf, commandBuf, &shellMT);
+			retVal = plInt(cmdline, variableBuf, commandBuf, &shellMT);
 		}
 
 		if(showRetVal)
