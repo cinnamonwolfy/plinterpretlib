@@ -21,13 +21,13 @@ update_prefixes(){
 }
 
 generate_config(){
-	if [ ! -f ./sources.conf ]; then
-		echo "Error: Sources file is missing!"
+	if [ ! -f ./defaults.conf ]; then
+		echo "Error: Defaults file is missing!"
 		echo "Notice: If you're not the project maintainer, this is a bug. Please report this to the project maintainers."
 		exit 1
 	fi
 
-	. ./sources.conf
+	. ./defaults.conf
 
 	if [ "$src" = "" ]; then
 		echo "Error: Sources field is empty!"
@@ -74,6 +74,10 @@ generate_config(){
 	compile_config_str="CC=\"$CC\"\nCFLAGS=\"$CFLAGS\"\nAR=\"$AR\"\nRANLIB=\"$RANLIB\"\n"
 	install_config_str="prefix=\"$prefix\"\nexec_prefix=\"$exec_prefix\"\nbindir=\"$bindir\"\nlibdir=\"$libdir\"\nincludedir=\"$includedir\"\n"
 	src_config_str=""
+
+	if [ "$LDFLAGS" != "" ]; then
+		compile_config_str="LDFLAGS=\"$LDFLAGS\"\n$compile_config_str"
+	fi
 
 	if [ "$platform" != "c" ]; then
 		case $platform in
@@ -175,7 +179,7 @@ while [ $# -ne 0 ]; do
 			fi
 			;;
 		--help | --*)
-			printf "PocketLinux32's Generic C99 Configure System v0.02\n\n"
+			printf "PocketLinux32's Generic C99 Configure System v0.03\n\n"
 			printf "Usage: $0 [OPTIONS]...\n\n"
 			echo "Install Options"
 			echo "--prefix=DIR			Set install path (default=/usr/local)"

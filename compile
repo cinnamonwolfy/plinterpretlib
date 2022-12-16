@@ -85,14 +85,14 @@ compile_shared_lib(){
 		_compile_obj $srcdir/$i "shared"
 	done
 	printf "Creating shared library $1..."
-	$CC -shared $(find obj | grep shared) -o lib$libname.so $CFLAGS
+	$CC -shared $(find obj | grep shared) -o lib$libname.so $CFLAGS $LDFLAGS
 	echo "Done."
 	rm *.o -f
 }
 
 compile_test(){
 	printf "Compiling test program $libtest..."
-	$CC $libtest.c -Iinclude -L. -l$libname -static $CFLAGS -o $libtest.out
+	$CC $libtest.c -Iinclude -L. -l$libname -static $CFLAGS $LDFLAGS -o $libtest.out
 	echo "Done."
 }
 
@@ -103,12 +103,14 @@ compile_lib(){
 
 install_lib(){
 	printf "Installing library $LIBNAME..."
-	cp include/* "$prefix/include"
-	mv * "$prefix/lib"
+	for i in $(ls include | grep ".h"); do
+		cp include/$i "$prefix/include"
+	done
+	mv libpl32.* "$prefix/lib"
 	echo "Done."
 }
 
-printf "PocketLinux32's Generic C Library Build System v0.04\n\n"
+printf "PocketLinux32's Generic C Library Build System v0.05\n\n"
 
 case $1 in
 	--clean)
@@ -140,7 +142,8 @@ fi
 . ./.config
 
 echo "Compiler: $CC"
-printf "Compiler Flags: $CFLAGS\n\n"
+echo "Compiler Flags: $CFLAGS"
+printf "Linker Flags: $LDFLAGS\n\n"
 
 _runtime_calc start
 $action
