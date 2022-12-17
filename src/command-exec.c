@@ -33,11 +33,8 @@ uint8_t plIntCommandExec(plarray_t* command, plarray_t* commandBuf, plmt_t* mt){
 	char** array = command->array;
 	int retVar = 0;
 
-	/* It tries running the built-ins first and then if that doesn't work, it runs an external command */
-	retVar = plIntExec(command, builtinCmdBuf, mt);
-	if(retVar == 255)
-		retVar = plIntExec(command, commandBuf, mt);
-
+	/* It tries to run a command in the command buffer. If it can't find the program*/
+	retVar = plIntExec(command, commandBuf, mt);
 	if(retVar == 255)
 		printf("%s: command not found\n", array[0]);
 

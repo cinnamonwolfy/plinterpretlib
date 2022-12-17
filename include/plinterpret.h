@@ -28,17 +28,10 @@ typedef struct plfunctionptr {
 	char* name;
 } plfunctionptr_t;
 
-typedef struct plint {
-	plarray_t* commandBuffer;
-	plarray_t* variableBuffer;
-	plarray_t* blockBuffers;
-	uint16_t blockStack;
-	plmt_t* memTrack;
-} plint_t;
+typedef struct plint plint_t;
 
-
+uint8_t plIntCom(plarray_t* cmdline, plarray_t* commandBuf);
 uint8_t plInt(char* cmdline, plint_t* shellStats);
-void plIntInteractive(char* prompt, bool showHelpAtStart, plint_t shellStats);
 
 #ifdef __cplusplus
 }

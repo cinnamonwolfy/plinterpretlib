@@ -4,7 +4,6 @@
  Builtins Source File
 \**********************************************************/
 #include <plinterpret.h>
-#include <plinterpret-builtins.h>
 
 int plIntPrint(plarray_t* args, plmt_t* mt){
 	if(args->size < 2)
@@ -31,16 +30,18 @@ int plIntExit(plarray_t* args, plmt_t* mt){
 	exit(strtol(array[0], &pointer, 10));
 }
 
-int plIntSetBuiltinBuf(plmt_t* mt){
-	plarray_t* tempBuf = plMTAllocE(mt, sizeof(plarray_t));
-	tempBuf->array = plMTAllocE(mt, 3 * sizeof(plfunctionptr_t));
-	tempBuf->size = 3;
-	plfunctionptr_t* holderPtr = tempBuf->array;
+void plIntInitExternalModule(plarray_t* commandBuf){
+	commandBuf->array = plMTAllocE(mt, 3 * sizeof(plfunctionptr_t));
+	plfunctionptr_t* holderPtr = commandBuf->array;
+	size_t hPtrSize = commandBuf->size;
 
-	holderPtr[0].function = plIntPrint;
-	holderPtr[0].name = "print";
-	holderPtr[1].function = plIntClear;
-	holderPtr[1].name = "clear";
-	holderPtr[2].function = plIntExit;
-	holderPtr[2].name = "exit";
+	holderPtr[hPtrSize].function = plIntPrint;
+	holderPtr[hPtrSize].name = "print";
+	holderPtr[hPtrSize + 1].function = plIntClear;
+	holderPtr[hPtrSize + 1].name = "clear";
+	holderPtr[hPtrSize + 2].function = plIntExit;
+	holderPtr[hPtrSize + 2].name = "exit";
+
+	commandBuf->size += 3;
 }
+`
