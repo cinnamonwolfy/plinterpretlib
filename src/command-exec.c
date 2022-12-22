@@ -4,13 +4,13 @@
  Command Executer Source File
 \**********************************************************/
 #include <plinterpret.h>
-#include <plinterpret-builtins.h>
 
 /* Internal command executer for plIntCommandExec */
 uint8_t plIntExec(plarray_t* command, plarray_t* commandBuf, plmt_t* mt){
 	int retVar = 0;
 	int i = 0;
-	bool commandBufExists = (commandBuf != NULL && commandBuf->size > 0){
+	bool commandBufExists = (commandBuf != NULL && commandBuf->size > 0);
+	char** array = command->array;
 
 	while(commandBufExists && strcmp(((plfunctionptr_t*)commandBuf->array)[i].name, array[0]) != 0 && i < commandBuf->size - 1){
 		i++;

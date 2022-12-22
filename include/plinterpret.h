@@ -30,7 +30,7 @@ typedef struct plfunctionptr {
 
 typedef struct plint plint_t;
 
-uint8_t plIntCom(plarray_t* cmdline, plarray_t* commandBuf);
+uint8_t plIntComInt(plarray_t* cmdline, plarray_t* commandBuf);
 uint8_t plInt(char* cmdline, plint_t* shellStats);
 
 #ifdef __cplusplus
