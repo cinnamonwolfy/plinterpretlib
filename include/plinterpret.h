@@ -10,11 +10,12 @@
 extern "C" {
 #endif
 
-#define PLSHVAR_NULL 0
-#define PLSHVAR_INT 1
-#define PLSHVAR_STRING 2
-#define PLSHVAR_BOOL 3
-#define PLSHVAR_FLOAT 4
+#define PLINT_VERSION "0.90"
+#define PLINTVAR_NULL 0
+#define PLINTVAR_INT 1
+#define PLINTVAR_STRING 2
+#define PLINTVAR_BOOL 3
+#define PLINTVAR_FLOAT 4
 
 typedef struct plvariable {
 	void* varptr;
@@ -30,7 +31,8 @@ typedef struct plfunctionptr {
 
 typedef struct plint plint_t;
 
-uint8_t plIntComInt(plarray_t* cmdline, plarray_t* commandBuf);
+plint_t* plIntInit(plmt_t* memTrack, plarray_t* commandBuf);
+uint8_t plIntCommandExec(plarray_t* cmdline, plarray_t* commandBuf, plmt_t* mt);
 uint8_t plInt(char* cmdline, plint_t* shellStats);
 
 #ifdef __cplusplus

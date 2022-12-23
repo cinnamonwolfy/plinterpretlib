@@ -27,7 +27,7 @@ uint8_t plIntExec(plarray_t* command, plarray_t* commandBuf, plmt_t* mt){
 
 /* Command Executer */
 uint8_t plIntCommandExec(plarray_t* command, plarray_t* commandBuf, plmt_t* mt){
-	if(mt == NULL || command == NULL)
+	if(command == NULL)
 		return 1;
 
 	char** array = command->array;
