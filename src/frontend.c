@@ -64,11 +64,25 @@ uint8_t plInt(char* cmdline, plint_t* intStatus){
 			}
 		}
 	}else if(strcmp(array[0], "load") == 0){
-		printf("This is a work in progress. Please try again at a later time\n");
-		return 1;
+		if(parsedCmdLine->size < 2){
+			printf("Error: Path required\n");
+			return 1;
+		}
 
 		void** loadedLibrary = loadExternalLib(array[1]);
-		void** libSetup;
+		if(loadedLibrary == NULL){
+			printf("Error: dlopen failed (dlerror string: %s)\n", dlerror());
+			return 2;
+		}
+
+		void (*libSetup)(plarray_t*);
+		*(void**)(&libSetup) = getExternalLibSymbol(loadedLibrary, "plIntExternalSetup");
+		if(libSetup != NULL){
+			printf("Error: Symbol plIntExternalSetup was not found\n");
+			return 3;
+		}
+
+		libSetup(intStatus->commandBuffer);
 	}else{
 		retVar = plIntCommandExec(parsedCmdLine, intStatus->commandBuffer, intStatus->memTrack);
 	}

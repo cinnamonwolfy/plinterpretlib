@@ -9,11 +9,11 @@ int plIntPrint(plarray_t* args, plmt_t* mt){
 	if(args->size < 2)
 		return 1;
 
-	for(int i = 1; i < command->size - 1; i++)
-		printf("%s ", array[i]);
+	for(int i = 1; i < args->size - 1; i++)
+		printf("%s ", ((char**)args->array)[i]);
 
-	printf("%s\n", array[command->size - 1]);
-	return 0
+	printf("%s\n", ((char**)args->array)[args->size - 1]);
+	return 0;
 }
 
 int plIntClear(plarray_t* args, plmt_t* mt){
@@ -27,11 +27,11 @@ int plIntExit(plarray_t* args, plmt_t* mt){
 	if(args->size < 2)
 		exit(tempNum);
 
-	exit(strtol(array[0], &pointer, 10));
+	exit(strtol(((char**)args->array)[0], &pointer, 10));
 }
 
-void plIntInitExternalModule(plarray_t* commandBuf){
-	commandBuf->array = plMTAllocE(mt, 3 * sizeof(plfunctionptr_t));
+void plIntExternalSetup(plarray_t* commandBuf){
+	commandBuf->array = plMTAllocE(commandBuf->mt, 3 * sizeof(plfunctionptr_t));
 	plfunctionptr_t* holderPtr = commandBuf->array;
 	size_t hPtrSize = commandBuf->size;
 
@@ -44,4 +44,3 @@ void plIntInitExternalModule(plarray_t* commandBuf){
 
 	commandBuf->size += 3;
 }
-`
